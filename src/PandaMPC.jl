@@ -344,7 +344,7 @@ MPC generation\n
 function go(span, final_z, initial_x, initial_u, initial_z, resample, T, n, l, m, weightQ, weightR)
     recalc_times = collect(0:resample:span-resample)
     tfin = [0;1] #only for creating these variables
-    xfin = [0 1; 0 1; 0 1; 0 1; 0 1; 0 1]
+    zfin = [0 1; 0 1; 0 1; 0 1; 0 1; 0 1]
     ufin = [0 1;0 1]
     for k = 1:length(recalc_times)
 
@@ -403,7 +403,7 @@ function go(span, final_z, initial_x, initial_u, initial_z, resample, T, n, l, m
         for i = 1:length(t3)
             if t3[i] <= resample*k
                 tfin = [tfin; t3[i]]
-                xfin = [xfin x.value[:,i]]
+                zfin = [zfin z.value[:,i]]
                 ufin = [ufin u.value[:,i]]
                 itera = i
             end
@@ -421,9 +421,9 @@ function go(span, final_z, initial_x, initial_u, initial_z, resample, T, n, l, m
     end
 
     tfin = tfin[3:end]
-    xfin = xfin[:,3:end]
+    zfin = zfin[:,3:end]
     ufin = ufin[:,3:end]
-    return tfin, xfin, ufin
+    return tfin, zfin, ufin
 end
 
 
@@ -563,7 +563,7 @@ MPC generation\n
 function go7(span, final_z, initial_x, initial_u, initial_z, resample, T, n, l, m, weightQ, weightR)
     recalc_times = collect(0:resample:span-resample)
     tfin = [0;1] #only for creating these variables
-    xfin = [0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1 ; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1]
+    zfin = [0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1 ; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1]
     ufin = [0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1]
     for k = 1:length(recalc_times)
 
@@ -622,7 +622,7 @@ function go7(span, final_z, initial_x, initial_u, initial_z, resample, T, n, l, 
         for i = 1:length(t3)
             if t3[i] <= resample*k
                 tfin = [tfin; t3[i]]
-                xfin = [xfin x.value[:,i]]
+                zfin = [zfin z.value[:,i]]
                 ufin = [ufin u.value[:,i]]
                 itera = i
             end
@@ -640,9 +640,10 @@ function go7(span, final_z, initial_x, initial_u, initial_z, resample, T, n, l, 
     end
 
     tfin = tfin[3:end]
-    xfin = xfin[:,3:end]
+    zfin = zfin[:,3:end]
     ufin = ufin[:,3:end]
-    return tfin, xfin, ufin
+    return tfin, zfin, ufin
 end
+
 export ball, intercplane, getjointangles, adi, forwardkin, skew, weights, model, robot_timescale, go, go7, iteraciones2, plotjoint
 end
