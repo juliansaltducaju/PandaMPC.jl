@@ -1,4 +1,4 @@
-module MPC
+module PandaMPC
 
 import LinearAlgebra
 import Plots
