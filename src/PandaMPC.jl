@@ -646,5 +646,5 @@ function go7(span, final_z, initial_x, initial_u, initial_z, resample)
     ufin = ufin[:,3:end]
     return tfin, xfin, ufin
 end
-
+export ball, intercplane, getjointangles, adi, forwardkin, skew, weights, model, robot_timescale, go, go7, iteraciones2, plotjoint
 end
