@@ -525,7 +525,7 @@ Plotting for position, velocity, acceleration and input (jerk) of one of the two
     joint should be 1 or 2
 
 """
-function plotjoint(timecalc, x, joint)
+function plotjoint(timecalc, u, x, joint)
     if joint == 1
         plot(timecalc,[x[1,:],x[2,:],x[3,:],u[1,:]], layout = 4, legend = false)
     elseif joint == 2
