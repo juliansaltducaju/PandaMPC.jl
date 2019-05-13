@@ -1,4 +1,4 @@
-name = "MPC"
+name = "PandaMPC"
 uuid = "833cce66-7584-11e9-1d5b-8f77cff11ee6"
 authors = ["Julian Salt Ducaju<julian.salt_ducaju@control.lth.se>"]
 version = "0.1.0"
