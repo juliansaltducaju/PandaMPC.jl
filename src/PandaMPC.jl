@@ -341,7 +341,7 @@ MPC generation\n
     initial_u = [0; 0]\n
     initial_z = [0; 0; 0; 0; 0; 0]
 """
-function go(span, final_z, initial_x, initial_u, initial_z, resample)
+function go(span, final_z, initial_x, initial_u, initial_z, resample, T, n l, m)
     recalc_times = collect(0:resample:span-resample)
     tfin = [0;1] #only for creating these variables
     xfin = [0 1; 0 1; 0 1; 0 1; 0 1; 0 1]
@@ -560,7 +560,7 @@ MPC generation\n
     initial_u = [0; 0]\n
     initial_z = [0; 0; 0; 0; 0; 0]
 """
-function go7(span, final_z, initial_x, initial_u, initial_z, resample)
+function go7(span, final_z, initial_x, initial_u, initial_z, resample, T, n l, m)
     recalc_times = collect(0:resample:span-resample)
     tfin = [0;1] #only for creating these variables
     xfin = [0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1 ; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1]
