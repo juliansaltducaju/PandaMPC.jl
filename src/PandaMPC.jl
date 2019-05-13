@@ -1,10 +1,8 @@
 module PandaMPC
 
-import LinearAlgebra
-import Plots
-import ECOS
-import Convex
-import DelimitedFiles
+using LinearAlgebra, Plots, ECOS, Convex, DelimitedFiles
+
+import LinearAlgebra, Plots, ECOS, Convex, DelimitedFiles
 
 ###############################################################################
 # This block contains the ball's trajectory simulation functions
