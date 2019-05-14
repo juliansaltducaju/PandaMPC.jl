@@ -342,7 +342,7 @@ MPC generation\n
     initial_z = [0; 0; 0; 0; 0; 0]
 """
 function go(span, final_z, initial_x, initial_u, initial_z, resample, T, n, l, m, weightQ, weightR)
-    recalc_times = collect(0:resample:span-resample)
+    recalc_times = collect(0:resample:span)
     tfin = [0;1] #only for creating these variables
     zfin = [0 1; 0 1; 0 1; 0 1; 0 1; 0 1]
     ufin = [0 1;0 1]
@@ -563,7 +563,7 @@ MPC generation\n
     initial_z = [0; 0; 0; 0; 0; 0]
 """
 function go7(span, final_z, initial_x, initial_u, initial_z, resample, T, n, l, m, weightQ, weightR)
-    recalc_times = collect(0:resample:span-resample)
+    recalc_times = collect(0:resample:span)
     tfin = [0;1] #only for creating these variables
     zfin = [0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1 ; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1]
     ufin = [0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1]
