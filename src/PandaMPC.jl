@@ -326,109 +326,6 @@ function robot_timescale(tfin, xfin2)
     return trobot, vrobot
 end
 
-"""
-MPC generation\n
-    span is the calculation time\n
-    resample lets you set how often does the MPC recalculate\n
-    final_z is the final state\n
-    initial_x, initial_u, initial_z are the initial conditions\n\n
-
-    Example - 2 joints, 6 degrees of freedom and time span of 1 second and recalculated every 20ms:\n
-    span = 1\n
-    resample = 0.02\n
-    final_z =  [1; 0; 0; 1; 0; 0]\n
-    initial_x = [0; 0; 0; 0; 0; 0]\n
-    initial_u = [0; 0]\n
-    initial_z = [0; 0; 0; 0; 0; 0]
-"""
-function go(span, final_z, initial_x, initial_u, initial_z, resample, T, n, l, m, weightQ, weightR)
-    recalc_times = collect(0:resample:span)
-    tfin = [0;1] #only for creating these variables
-    zfin = [0 1; 0 1; 0 1; 0 1; 0 1; 0 1]
-    ufin = [0 1;0 1]
-    for k = 1:length(recalc_times)
-
-        tsim = span - recalc_times[k] #Simulation time
-        h = tsim/(T-1)
-        (A, B, Dz) = model(h, n)
-
-        # Start and end point
-        if k == 1
-            t = 0
-            for i = 1:(T-1)
-                t = [t; t[end]+h]
-            end
-        else
-            x = nothing
-            u = nothing
-            z = nothing
-        end
-
-        # Create a optimization variables of size n x 1.
-        x = Variable(n, T)
-        u = Variable(m, T)
-        z = Variable(l, T)
-
-        # Create a problem instance
-        (Q,R) = weights(weightQ, weightR, m);
-        problem = minimize(quadform(z,Q) + quadform(u,R))
-
-        # Equality constraints
-        problem.constraints += x[:,1] == initial_x
-        problem.constraints += u[:,1] == initial_u
-        problem.constraints += z[:,1] == initial_z
-        problem.constraints += z[:,T] == final_z
-
-        for i in 1 : T -1
-          problem.constraints += u[:,i+1] <= u[:,i] + [100; 100; 100; 100; 100; 100; 100]
-          problem.constraints += u[:,i+1] >= u[:,i] - [100; 100; 100; 100; 100; 100; 100]
-          problem.constraints += u[:,i+1] <= [1500; 1500]
-          problem.constraints += u[:,i+1] >= [-1500; -1500]
-          problem.constraints += z[:,i+1] <= [2; 3.14159; 45; 2; 3.14159; 45]
-          problem.constraints += z[:,i+1] >= [-2; -3.14159; -45; -2; -3.14159; -45]
-          problem.constraints += x[:,i+1] == A*x[:, i] + B* u[:, i]
-          problem.constraints += z[:,i+1] == x[:,i+1] + Dz* u[:,i+1]
-        end
-
-        # Solve the problem by calling solve!
-        solve!(problem, ECOSSolver())
-
-        # Check the status of the problem
-       problem.status # :Optimal, :Infeasible, :Unbounded etc.
-
-        # Get the optimum value
-        problem.optval
-
-        # global itera, tbien
-        itera = 0
-        t3 = collect(recalc_times[k]:h:span)
-        for i = 1:length(t3)
-            if t3[i] <= resample*k
-                tfin = [tfin; t3[i]]
-                zfin = [zfin z.value[:,i]]
-                ufin = [ufin u.value[:,i]]
-                itera = i
-            end
-        end
-        tbien = t3[1:itera]
-        if tbien[end] == resample*k
-            initial_x = x.value[:,itera]
-            initial_u = u.value[:,itera]
-            initial_z = z.value[:,itera]
-        else #Lineal interpolation
-            initial_x = ((x.value[:,itera+1]-x.value[:,itera])/(t3[itera+1]-t3[itera]))*(resample*k-t3[itera]) + x.value[:,itera]
-            initial_u = ((u.value[:,itera+1]-u.value[:,itera])/(t3[itera+1]-t3[itera]))*(resample*k-t3[itera]) + u.value[:,itera]
-            initial_z = ((z.value[:,itera+1]-z.value[:,itera])/(t3[itera+1]-t3[itera]))*(resample*k-t3[itera]) + z.value[:,itera]
-        end
-    end
-
-    tfin = tfin[3:end]
-    zfin = zfin[:,3:end]
-    ufin = ufin[:,3:end]
-    return tfin, zfin, ufin
-end
-
-
 
 """
 Simulation for 2 joints:\n\n
@@ -563,7 +460,7 @@ MPC generation\n
     initial_z = [0; 0; 0; 0; 0; 0]
 """
 function go7(span, final_z, initial_x, initial_u, initial_z, resample, T, n, l, m, weightQ, weightR)
-    recalc_times = collect(0:resample:span)
+    recalc_times = collect(0:resample:span-resample)
     tfin = [0;1] #only for creating these variables
     zfin = [0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1 ; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1]
     ufin = [0 1; 0 1; 0 1; 0 1; 0 1; 0 1; 0 1]
@@ -572,18 +469,6 @@ function go7(span, final_z, initial_x, initial_u, initial_z, resample, T, n, l, 
         tsim = span - recalc_times[k] #Simulation time
         h = tsim/(T-1)
         (A, B, Dz) = model(h, n)
-
-        # Start and end point
-        if k == 1
-            t = 0
-            for i = 1:(T-1)
-                t = [t; t[end]+h]
-            end
-        else
-            x = nothing
-            u = nothing
-            z = nothing
-        end
 
         # Create a optimization variables of size n x 1.
         x = Variable(n, T)
@@ -623,24 +508,33 @@ function go7(span, final_z, initial_x, initial_u, initial_z, resample, T, n, l, 
         # global itera, tbien
         itera = 0
         t3 = collect(recalc_times[k]:h:span)
+
         for i = 1:length(t3)
-            if t3[i] <= resample*k
+            if k < length(recalc_times)
+                if t3[i] <= resample*k
+                    tfin = [tfin; t3[i]]
+                    zfin = [zfin z.value[:,i]]
+                    ufin = [ufin u.value[:,i]]
+                    itera = i
+                end
+                tbien = t3[1:itera]
+                if tbien[end] == resample*k
+                    initial_x = x.value[:,itera]
+                    initial_u = u.value[:,itera]
+                    initial_z = z.value[:,itera]
+                else #Lineal interpolation
+                    initial_x = ((x.value[:,itera+1]-x.value[:,itera])/(t3[itera+1]-t3[itera]))*(resample*k-t3[itera]) + x.value[:,itera]
+                    initial_u = ((u.value[:,itera+1]-u.value[:,itera])/(t3[itera+1]-t3[itera]))*(resample*k-t3[itera]) + u.value[:,itera]
+                    initial_z = ((z.value[:,itera+1]-z.value[:,itera])/(t3[itera+1]-t3[itera]))*(resample*k-t3[itera]) + z.value[:,itera]
+                end
+            else
                 tfin = [tfin; t3[i]]
                 zfin = [zfin z.value[:,i]]
                 ufin = [ufin u.value[:,i]]
                 itera = i
             end
         end
-        tbien = t3[1:itera]
-        if tbien[end] == resample*k
-            initial_x = x.value[:,itera]
-            initial_u = u.value[:,itera]
-            initial_z = z.value[:,itera]
-        else #Lineal interpolation
-            initial_x = ((x.value[:,itera+1]-x.value[:,itera])/(t3[itera+1]-t3[itera]))*(resample*k-t3[itera]) + x.value[:,itera]
-            initial_u = ((u.value[:,itera+1]-u.value[:,itera])/(t3[itera+1]-t3[itera]))*(resample*k-t3[itera]) + u.value[:,itera]
-            initial_z = ((z.value[:,itera+1]-z.value[:,itera])/(t3[itera+1]-t3[itera]))*(resample*k-t3[itera]) + z.value[:,itera]
-        end
+
     end
 
     tfin = tfin[3:end]
