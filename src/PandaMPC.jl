@@ -486,8 +486,8 @@ function go7(span, final_z, initial_x, initial_u, initial_z, resample, T, n, l, 
         problem.constraints += z[:,T] == final_z
 
         for i in 1 : T -1
-          problem.constraints += u[:,i+1] <= u[:,i] + [100; 100; 100; 100; 100; 100; 100]
-          problem.constraints += u[:,i+1] >= u[:,i] - [100; 100; 100; 100; 100; 100; 100]
+          problem.constraints += u[:,i+1] <= u[:,i] + [10; 10; 10; 10; 10; 10; 10]
+          problem.constraints += u[:,i+1] >= u[:,i] - [10; 10; 10; 10; 10; 10; 10]
           problem.constraints += u[:,i+1] <= [5000; 3000; 4000; 4000; 5000; 7000; 7000]
           problem.constraints += u[:,i+1] >= [-5000; -3000; -4000; -4000; -5000; -7000; -7000]
           problem.constraints += z[:,i+1] <= [2.5; 2; 13; 1.5; 2; 6; 2.5; 2; 8; -0.069; 2; 10; 2.5; 2.5; 13; 3.5; 2.5; 18; 2.5; 2.5; 18]
