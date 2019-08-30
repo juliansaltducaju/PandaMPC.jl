@@ -1,8 +1,4 @@
-using Test, PandaMPC
-
-using ECOS
-using Convex
-using Plots
+using LinearAlgebra, Plots, ECOS, Convex, DelimitedFiles, Test, PandaMPC
 
 import PandaMPC
 
@@ -31,3 +27,22 @@ Q = [0 0 0; 0 1 0; 0 0 1]
 R = pesoR
 @test (Q,R) == weights(pesoQ, pesoR, m)
 @test (xcapture, ycapture, zcapture, tcapture) == intercplane(t, posdrag, xplane)
+
+span = 1
+resample = 0.02
+final_z =  [1; 0; 0; 1; 0; 0; 1; 0; 0; 1; 0; 0; 1; 0; 0; 1; 0; 0 ; 1; 0; 0]
+initial_x = [0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0]
+initial_u = [0; 0; 0; 0; 0; 0; 0]
+initial_z = [0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0]
+const pesoQ = 1
+const pesoR = 0.001
+const m = 7;  n = 21; l = 21
+const T = 15+1 # Number of timesteps/ Prediction (and Control) Horizon
+
+tfin, zfin, ufin = go7(span, final_z, initial_x, initial_u, initial_z, resample, T, n, l, m, pesoQ, pesoR)
+
+a = (abs.(zfin[:,end]).-final_z).<0.01
+
+for i = 1:length(a)
+    @test a[i]
+end
