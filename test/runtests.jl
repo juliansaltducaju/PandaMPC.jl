@@ -1,4 +1,4 @@
-using Test, JuliansMPCforJulia
+using Test, PandaMPC
 
 using ECOS
 using Convex
