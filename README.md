@@ -1,6 +1,6 @@
 # PandaMPC.jl
 
-[![Build Status](https://travis-ci.org/juliansaltducaju/PandaMPC.jl)](https://travis-ci.org/juliansaltducaju/PandaMPC.jl)
+[![Build Status](https://travis-ci.org/juliansaltducaju/PandaMPC.jl.svg?branch=master)](https://travis-ci.org/juliansaltducaju/PandaMPC.jl)
 
 
 The goal of this package is to calculate a trajectory to feed it offline to a Franka Emika Panda Robot, whose ultimate goal is to catch a ball with its end-effector.
