@@ -43,6 +43,25 @@ tfin, zfin, ufin = go7(span, final_z, initial_x, initial_u, initial_z, resample,
 
 a = (abs.(zfin[:,end]).-final_z).<0.01
 
-for i = 1:length(a)
-    @test a[i]
-end
+@test a[1]
+@test a[2]
+@test a[3]
+@test a[4]
+@test a[5]
+@test a[6]
+@test a[7]
+@test a[8]
+@test a[9]
+@test a[10]
+@test a[11]
+@test a[12]
+@test a[13]
+@test a[14]
+@test a[15]
+@test a[16]
+@test a[17]
+@test a[18]
+@test a[19]
+@test a[20]
+@test a[21]
+
