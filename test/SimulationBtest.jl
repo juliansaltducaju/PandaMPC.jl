@@ -34,10 +34,10 @@ final_z =  [1; 0; 0; 1; 0; 0; 1; 0; 0; 1; 0; 0; 1; 0; 0; 1; 0; 0 ; 1; 0; 0]
 initial_x = [0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0]
 initial_u = [0; 0; 0; 0; 0; 0; 0]
 initial_z = [0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0]
-const pesoQ = 1
-const pesoR = 0.001
-const m = 7;  n = 21; l = 21
-const T = 15+1 # Number of timesteps/ Prediction (and Control) Horizon
+pesoQ = 1
+pesoR = 0.001
+m = 7;  n = 21; l = 21
+T = 15+1 # Number of timesteps/ Prediction (and Control) Horizon
 
 tfin, zfin, ufin = go7(span, final_z, initial_x, initial_u, initial_z, resample, T, n, l, m, pesoQ, pesoR)
 
