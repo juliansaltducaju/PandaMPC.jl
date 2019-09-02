@@ -36,3 +36,4 @@ Finally, to generate the trajectory:
 t, z, u = go7(span, final_z, initial_x, initial_u, initial_z, resample, T, n, l, m, pesoQ, pesoR)
 
 ```
+![Results](/example/fig.png)
