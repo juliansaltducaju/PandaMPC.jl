@@ -1,3 +1,4 @@
+using Pkg
 import Pkg; Pkg.add("Test")
 using Test, PandaMPC
 
